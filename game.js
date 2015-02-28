@@ -5,7 +5,7 @@ onerror = function(msg, url, l) {
 	return true;
 }
 // Gets mouse event coordinates relative to the canvas
-HTMLCanvasElement.prototype.relMouseCoords = function(event) {
+HTMLCanvasElement.prototype.relMouseCoords = function(e) {
 	var totalOffsetX = 0;
 	var totalOffsetY = 0;
 	var canvasX = 0;
@@ -17,13 +17,15 @@ HTMLCanvasElement.prototype.relMouseCoords = function(event) {
 		totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
 	} while(currentElement = currentElement.offsetParent)
 
-	canvasX = event.pageX - totalOffsetX;
-	canvasY = event.pageY - totalOffsetY;
-
-	return {
+	canvasX = e.pageX - totalOffsetX;
+	canvasY = e.pageY - totalOffsetY;
+	var out = {
 		x : canvasX,
 		y : canvasY
 	}
+	var theDiv = document.getElementById('coordinates');
+	theDiv.innerHTML = '<h2>' + 'x: ' + out.x + ' y: ' + out.y + '</h2>';
+	return out
 }
 
 Array.prototype.clear = function() {
@@ -150,7 +152,7 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 	window.addEventListener('mousewheel', onweel, false);
 	window.addEventListener('DOMMouseScroll', onweel, false);
 
-	canvas.onmousedown = function(ev) {
+	var iStart = function(ev) {
 		var e = canvas.relMouseCoords(ev);
 
 		mousePos = new Vector2(e.x, e.y);
@@ -187,7 +189,7 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		}
 	}
 
-	canvas.onmouseup = function(ev) {
+	var iEnd = function(ev) {
 
 		var e = canvas.relMouseCoords(ev);
 
@@ -219,7 +221,8 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		mousePos = null;
 	}
 
-	canvas.onmousemove = function(ev) {
+
+	var iMove = function(ev) {
 		var e = canvas.relMouseCoords(ev);
 		mousePos = new Vector2(e.x, e.y);
 	}
@@ -319,4 +322,23 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		this.length = from < 0 ? this.length + from : from;
 		return this.push.apply(this, rest);
 	};
+
+
+	//Events
+	canvas.onmousedown = iStart
+	canvas.onmousemove = iMove
+	canvas.onmouseup = iEnd
+	canvas.addEventListener('touchstart', function (event) {
+		event.preventDefault()
+		iStart(event)
+	})
+	canvas.addEventListener('touchmove', function (event) {
+		event.preventDefault()
+		iMove(event)
+	})
+	canvas.addEventListener('touchend', function (event) {
+		event.preventDefault()
+		iEnd(event)
+	})
+
 }

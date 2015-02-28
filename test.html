@@ -44,13 +44,6 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-		<script type="text/javascript" src="Lab/util.js"></script>
-		<script type="text/javascript" src="Lab/vector2.js"></script>
-		<script type="text/javascript" src="Lab/node2D.js"></script>
-		<script type="text/javascript" src="Lab/spring2D.js"></script>
-		<script type="text/javascript" src="Lab/geometryGenerator.js"></script>
-		<script type="text/javascript" src="Lab/drawLib.js"></script>
-		<script type="text/javascript" src="game.js"></script>
 
 		<title>Spring Lab</title>
 	</head>
@@ -93,7 +86,6 @@
 
 		<div id = "about">
 			SpringsLab by <b>Hisham Ghosheh</b>, JS Version, <a  href="http://ghoshehsoft.wordpress.com/2013/03/02/simple-spring-physics/" target="_blank">http://ghoshehsoft.wordpress.com/2013/03/02/simple-spring-physics/</a>
-		<div id = "coordinates"><h2>coordinates</h2></div>
 		</div>
 
 		<script type="text/javascript">
@@ -109,8 +101,14 @@
 			canvas.width = Util.getPageWidth();
 			canvas.height = Util.getPageHeight();
 
-			// Creating game, divs are optional to pass
-			var g = new Game(canvas, massDiv, typeDiv, stiffnessDiv, helpDiv);
+			canvas.addEventListener('onmousedown', function(ev) {
+				alert('poo')
+			})
+
+			canvas.onmousedown = function(ev) {
+				alert('yar')
+			}
+
 		</script>
 	</body>
 </html>
