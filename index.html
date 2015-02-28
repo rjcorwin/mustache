@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			#myCanvas {
+				position: absolute;
+				z-index: 1;
+				background-color: #FFFFFF
+			}
+
+			#about {
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+				z-index: 4
+			}
+
+			#help {
+				font-size: 25px;
+				color: #FFFFFF;
+				right: 10px;
+				top: 10px;
+				position: absolute;
+				z-index: 3;
+				background-color: #9FC1CA;
+				opacity: 0.82
+			}
+
+			#info {
+				color: #888888;
+				font-size: 20px;
+				top: 10px;
+				left: 10px;
+				position: absolute;
+				z-index: 2;
+			}
+
+		</style>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+		<script type="text/javascript" src="Lab/util.js"></script>
+		<script type="text/javascript" src="Lab/vector2.js"></script>
+		<script type="text/javascript" src="Lab/node2D.js"></script>
+		<script type="text/javascript" src="Lab/spring2D.js"></script>
+		<script type="text/javascript" src="Lab/geometryGenerator.js"></script>
+		<script type="text/javascript" src="Lab/drawLib.js"></script>
+		<script type="text/javascript" src="game.js"></script>
+
+		<title>Spring Lab</title>
+	</head>
+	<body style="background-color: #AABBCC">
+		<div id = "help">
+			<b>Mouse Left button  :</b> Move node
+			<br/>
+			<b>Mouse double click :</b> Delete node
+			<br/>
+			<b>Mouse right button :</b> Create node
+			<br/>
+			<b>Mouse right drag    :</b> Connect ndoes
+			<br/>
+			<b>Mouse Wheel :</b> Change mass
+			<br/>
+			<br/>
+			<b>Up\Down :</b> Change stiffness
+			<br/>
+			<b>Space :</b> Toggle strings mode
+			<br/>
+			<b>P :</b> Pause\Resume
+			<br/>
+			<b>F5 :</b> Reset all
+			<br/>
+			<b>Num1 :</b> Show\hide help
+			<br/>
+		</div>
+		<div  id="info">
+			<div id="mass">
+				Mass: -
+			</div>
+			<div id="type">
+				Type: Springs
+			</div>
+			<div id="stiffness">
+				Stiffness: 0
+			</div>
+		</div>
+		<canvas id="myCanvas" width="800" height="600"></canvas>
+
+		<div id = "about">
+			SpringsLab by <b>Hisham Ghosheh</b>, JS Version, <a  href="http://ghoshehsoft.wordpress.com/2013/03/02/simple-spring-physics/" target="_blank">http://ghoshehsoft.wordpress.com/2013/03/02/simple-spring-physics/</a>
+		</div>
+
+		<script type="text/javascript">
+			document.oncontextmenu = function() {
+				return false;
+			}
+			var canvas = document.getElementById('myCanvas');
+			var massDiv = document.getElementById('mass');
+			var typeDiv = document.getElementById('type');
+			var stiffnessDiv = document.getElementById('stiffness');
+			var helpDiv = document.getElementById('help');
+
+			canvas.width = Util.getPageWidth();
+			canvas.height = Util.getPageHeight();
+
+			// Creating game, divs are optional to pass
+			var g = new Game(canvas, massDiv, typeDiv, stiffnessDiv, helpDiv);
+		</script>
+	</body>
+</html>
