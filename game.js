@@ -16,7 +16,7 @@ HTMLCanvasElement.prototype.relMouseCoords = function(e) {
 		out.y = e.pageY;
 	}
 	var theDiv = document.getElementById('coordinates');
-	theDiv.innerHTML = '<h2>' + 'x: ' + out.x + ' y: ' + out.y + '</h2>';
+	theDiv.innerHTML = '<h2>' + 'x: ' + out.x + ' y: ' + out.y + ' e.type: ' + e.type + '</h2>';
 	return out
 }
 
@@ -145,12 +145,12 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 	window.addEventListener('DOMMouseScroll', onweel, false);
 
 	var iStart = function(ev) {
+		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
 
 		mousePos = new Vector2(e.x, e.y);
 		var node_ = pickNode(e.x, e.y);
 
-		if (ev.button == 0) {
 			// double click-> remove node and attached springs
 			if (node_ && currentTime() - clickTimeL < 500) {
 
@@ -171,41 +171,13 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 			nodeL = node_;
 			mouseL = true;
 			clickTimeL = currentTime();
-		} else if (ev.button == 2) {
-			if (node_) {
-				nodeR = node_;
-				mouseR = true;
-			}
 
-			clickPosR = new Vector2(mousePos.x, mousePos.y);
-		}
 	}
 
 	var iEnd = function(ev) {
-
+		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
 
-		if (ev.button == 2) {
-			var node_ = pickNode(e.x, e.y);
-
-			if (!nodeR && !node_) {
-				node_ = new Node2D(mousePos.x, mousePos.y, mass);
-				nodes.push(node_);
-			} else if (nodeR && nodeR != node_) {
-				if (!node_)
-					node_ = new Node2D(e.x, e.y, mass);
-
-				nodes.push(node_);
-
-				var dist = VecOp.distanceV2(node_.p, nodeR.p);
-
-				var spr = new Spring2D(nodeR, node_, 0.80 * dist, -stiffness);
-				spr.setStringMode(stringMode);
-				springs.push(spr);
-			}
-
-			nodeR = null;
-		}
 
 		mouseL = false;
 		mouseR = false;
@@ -215,6 +187,7 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 
 
 	var iMove = function(ev) {
+		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
 		mousePos = new Vector2(e.x, e.y);
 	}
