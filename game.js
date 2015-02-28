@@ -6,22 +6,14 @@ onerror = function(msg, url, l) {
 }
 // Gets mouse event coordinates relative to the canvas
 HTMLCanvasElement.prototype.relMouseCoords = function(e) {
-	var totalOffsetX = 0;
-	var totalOffsetY = 0;
-	var canvasX = 0;
-	var canvasY = 0;
-	var currentElement = this;
-
-	do {
-		totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-		totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
-	} while(currentElement = currentElement.offsetParent)
-
-	canvasX = e.pageX - totalOffsetX;
-	canvasY = e.pageY - totalOffsetY;
-	var out = {
-		x : canvasX,
-		y : canvasY
+	var out = {x:0, y:0};
+	if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+		var touch = e.touches[0] || e.changedTouches[0];
+		out.x = touch.pageX;
+		out.y = touch.pageY;
+	} else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+		out.x = e.pageX;
+		out.y = e.pageY;
 	}
 	var theDiv = document.getElementById('coordinates');
 	theDiv.innerHTML = '<h2>' + 'x: ' + out.x + ' y: ' + out.y + '</h2>';
