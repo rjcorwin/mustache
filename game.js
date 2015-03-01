@@ -48,7 +48,7 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		stringMode = false;
 
 		paused = false;
-		//helpVisible = true;
+		helpVisible = false;
 
 		nodeL = null;
 		nodeR = null;
@@ -56,12 +56,15 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		springs.clear();
 		nodes.clear();
 
-		var pendulum = GeometryGenerator.createPendulum(30, 180, 100, 100, 260, 1, 50, -stiffness);
-		var mesh = GeometryGenerator.createMesh(200, 20, 5, 5, 60, 60, 1, 50, 50, -stiffness);
-		var circle = GeometryGenerator.createCircle(700, 300, 100, 6, 1, 1, 80, 60, -stiffness);
+		var items = [
+			[30, 180, 100],
+			[100, 260, 1],
+			[170, 320, 200],
+		]
 
-		nodes = nodes.concat(pendulum.Nodes, circle.Nodes, mesh.Nodes);
-		springs = springs.concat(pendulum.Springs, circle.Springs, mesh.Springs);
+		var string = GeometryGenerator.createString(items, 50, -stiffness);
+		nodes = nodes.concat(string.Nodes);
+		springs = springs.concat(string.Springs);
 	}
 
 	initLab();
@@ -264,7 +267,7 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 			var b1 = springs[i].node1;
 			var b2 = springs[i].node2;
 
-			drawLib.drawLine(context, b1.p, b2.p, 6.0 * springs[i].getRest(), ( paused ? "#888888" : "null"));
+			drawLib.drawLine(context, b1.p, b2.p, 6.0 * springs[i].getRest(), ( paused ? "#914600" : "null"));
 		};
 
 		for (var i = 0; i < nodes.length; i++) {
