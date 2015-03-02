@@ -5,6 +5,21 @@ onerror = function(msg, url, l) {
 	return true;
 }
 
+function toggleFullScreen() {
+	var doc = window.document;
+	var docEl = doc.documentElement;
+
+	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+		requestFullScreen.call(docEl);
+	}
+	else {
+		cancelFullScreen.call(doc);
+	}
+}
+
 // Gets mouse event coordinates relative to the canvas
 HTMLCanvasElement.prototype.relMouseCoords = function(e) {
 	var out = {x:0, y:0};
@@ -34,6 +49,7 @@ function Game(canvas_) {
 	var stringMode = false;
 	var paused = false;
 	function initLab() {
+		toggleFullScreen()
 		stiffness = 3.0;
 		stringMode = false;
 		paused = false;
