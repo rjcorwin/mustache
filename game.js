@@ -42,7 +42,7 @@ function Game(canvas_) {
 		nodeR = null;
 		springs.clear();
 		nodes.clear();
-		var mass = 1
+		var mass = 10
 		var items = [
 			[30, 150, mass],
 			[80, 180, mass],
