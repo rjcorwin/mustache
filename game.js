@@ -4,6 +4,7 @@ onerror = function(msg, url, l) {
 	alert(msg + "\n" + url + "\n" + l);
 	return true;
 }
+
 // Gets mouse event coordinates relative to the canvas
 HTMLCanvasElement.prototype.relMouseCoords = function(e) {
 	var out = {x:0, y:0};
@@ -56,10 +57,22 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		springs.clear();
 		nodes.clear();
 
+		var mass = 1
+
 		var items = [
-			[30, 180, 100],
-			[100, 260, 1],
-			[170, 320, 200],
+			[30, 150, mass],
+			[80, 180, mass],
+			[130, 185, mass],
+			[180, 150, mass],
+			[230, 120, mass],
+			[280, 100, mass],
+			[330, 95, 4000],
+			[380, 100, mass],
+			[430, 120, mass],
+			[480, 150, mass],
+			[530, 185, mass],
+			[580, 180, mass],
+			[630, 150, mass],
 		]
 
 		var string = GeometryGenerator.createString(items, 50, -stiffness);
@@ -87,65 +100,6 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		return val;
 	}
 
-
-	document.addEventListener("keypress", function(ev) {
-		var key = ev.which;
-		if (key == 32) {
-			stringMode = !stringMode;
-			for (var i = 0; i < springs.length; i++) {
-				springs[i].setStringMode(stringMode);
-			};
-		} else if (key == 1581 || key == 112) {
-			paused = !paused;
-		}
-
-	}, false);
-
-	document.addEventListener("keydown", function(ev) {
-		var key = ev.which;
-		if (key == 38) {
-			stiffness += 0.02;
-			stiffness = clamp(stiffness, 0.5, 3);
-
-			for (var i = 0; i < springs.length; i++) {
-				springs[i].setStiffness(-stiffness);
-			};
-		} else if (key == 40) {
-			stiffness -= 0.02;
-			stiffness = clamp(stiffness, 0.5, 3);
-
-			for (var i = 0; i < springs.length; i++) {
-				springs[i].setStiffness(-stiffness);
-			};
-		} else if (key == 49 || key == 91) {
-			if (!helpDiv)
-				return;
-
-			var d = helpDiv.style.display;
-			if (d == 'none')
-				d = 'block';
-			else
-				d = 'none';
-
-			helpDiv.style.display = d;
-		}
-	}, true);
-
-	function onweel(ev) {
-		if (nodeL) {
-			var rolled = 0;
-			if ('wheelDelta' in ev)
-				rolled = -event.wheelDelta / 50.0;
-			else
-				rolled = ev.detail / 1.5;
-
-			nodeL.setMass(nodeL.getMass() + -rolled);
-		}
-	}
-
-
-	window.addEventListener('mousewheel', onweel, false);
-	window.addEventListener('DOMMouseScroll', onweel, false);
 
 	var iStart = function(ev) {
 		ev.preventDefault()
@@ -180,7 +134,6 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 	var iEnd = function(ev) {
 		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
-
 
 		mouseL = false;
 		mouseR = false;
