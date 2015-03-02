@@ -75,32 +75,11 @@ function Game(canvas_) {
 	var mousePos = new Vector2();
 	var clickTimeL = 0;
 
-	function clamp(val, min, max) {
-		if (val < min)
-			return min;
-		if (val > max)
-			return max;
-		return val;
-	}
-
 	var iStart = function(ev) {
 		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
 		mousePos = new Vector2(e.x, e.y);
 		var node_ = pickNode(e.x, e.y);
-		// double click-> remove node and attached springs
-		if (node_ && currentTime() - clickTimeL < 500) {
-			for (var i = 0; i < springs.length; i++) {
-				s = springs[i];
-				if (s.node1 == node_ || s.node2 == node_) {
-					springs.remove(i);
-					i--;
-				}
-			}
-			nodes.remove(nodes.indexOf(node_));
-			nodeL = null;
-			return;
-		}
 		nodeL = node_;
 		mouseL = true;
 		clickTimeL = currentTime();
