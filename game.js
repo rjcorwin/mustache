@@ -16,23 +16,16 @@ HTMLCanvasElement.prototype.relMouseCoords = function(e) {
 		out.x = e.pageX;
 		out.y = e.pageY;
 	}
-	var theDiv = document.getElementById('coordinates');
-	theDiv.innerHTML = '<h2>' + 'x: ' + out.x + ' y: ' + out.y + ' e.type: ' + e.type + '</h2>';
-	return out
+		return out
 }
 
 Array.prototype.clear = function() {
 	this.splice(0, this.length);
 };
 
-function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
+function Game(canvas_) {
 
 	var canvas = canvas_;
-	var massDiv = massDiv_;
-	var typeDiv = typeDiv_;
-	var stiffnessDiv = stiffnessDiv_
-	var helpDiv = helpDiv_;
-
 	var context = canvas.getContext('2d');
 
 	var nodes = new Array();
@@ -74,6 +67,12 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 			[580, 180, mass],
 			[630, 150, mass],
 		]
+
+		items.forEach(function(item, i) {
+			item[1] = item[1] - 50
+			items[i] = item
+		})
+
 
 		var string = GeometryGenerator.createString(items, 50, -stiffness);
 		nodes = nodes.concat(string.Nodes);
@@ -198,19 +197,6 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 			nodeL.p.y = mousePos.y;
 		}
 
-		if (massDiv) {
-			if (nodeL)
-				massDiv.innerHTML = "Mass: " + nodeL.getMass().toFixed(2);
-			else
-				massDiv.innerHTML = "Mass: -";
-		}
-
-		if (stiffnessDiv)
-			stiffnessDiv.innerHTML = "Stiffness: " + stiffness.toFixed(2);
-
-		if (typeDiv)
-			typeDiv.innerHTML = "Type: " + ( stringMode ? "Strings" : "Springs");
-
 	}
 
 	function draw() {
@@ -243,7 +229,6 @@ function Game(canvas_, massDiv_, typeDiv_, stiffnessDiv_, helpDiv_) {
 		this.length = from < 0 ? this.length + from : from;
 		return this.push.apply(this, rest);
 	};
-
 
 	//Events
 	canvas.onmousedown = iStart
