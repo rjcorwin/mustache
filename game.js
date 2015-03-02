@@ -24,34 +24,25 @@ Array.prototype.clear = function() {
 };
 
 function Game(canvas_) {
-
 	var canvas = canvas_;
 	var context = canvas.getContext('2d');
-
 	var nodes = new Array();
 	var springs = new Array();
 	var nodeL;
 	var nodeR;
-
 	var stiffness = 3;
 	var stringMode = false;
 	var paused = false;
-
 	function initLab() {
 		stiffness = 3.0;
 		stringMode = false;
-
 		paused = false;
 		helpVisible = false;
-
 		nodeL = null;
 		nodeR = null;
-
 		springs.clear();
 		nodes.clear();
-
 		var mass = 1
-
 		var items = [
 			[30, 150, mass],
 			[80, 180, mass],
@@ -67,28 +58,21 @@ function Game(canvas_) {
 			[580, 180, mass],
 			[630, 150, mass],
 		]
-
 		items.forEach(function(item, i) {
 			item[1] = item[1] - 50
 			items[i] = item
 		})
-
-
 		var string = GeometryGenerator.createString(items, 50, -stiffness);
 		nodes = nodes.concat(string.Nodes);
 		springs = springs.concat(string.Springs);
 	}
 
-	initLab();
 
 	var mouseL = false;
 	var mouseR = false;
-
 	var mass = 1;
-
 	var clickPosR = null;
 	var mousePos = new Vector2();
-
 	var clickTimeL = 0;
 
 	function clamp(val, min, max) {
@@ -99,47 +83,36 @@ function Game(canvas_) {
 		return val;
 	}
 
-
 	var iStart = function(ev) {
 		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
-
 		mousePos = new Vector2(e.x, e.y);
 		var node_ = pickNode(e.x, e.y);
-
-			// double click-> remove node and attached springs
-			if (node_ && currentTime() - clickTimeL < 500) {
-
-				for (var i = 0; i < springs.length; i++) {
-					s = springs[i];
-					if (s.node1 == node_ || s.node2 == node_) {
-						springs.remove(i);
-						i--;
-					}
+		// double click-> remove node and attached springs
+		if (node_ && currentTime() - clickTimeL < 500) {
+			for (var i = 0; i < springs.length; i++) {
+				s = springs[i];
+				if (s.node1 == node_ || s.node2 == node_) {
+					springs.remove(i);
+					i--;
 				}
-
-				nodes.remove(nodes.indexOf(node_));
-				nodeL = null;
-
-				return;
 			}
-
-			nodeL = node_;
-			mouseL = true;
-			clickTimeL = currentTime();
-
+			nodes.remove(nodes.indexOf(node_));
+			nodeL = null;
+			return;
+		}
+		nodeL = node_;
+		mouseL = true;
+		clickTimeL = currentTime();
 	}
 
 	var iEnd = function(ev) {
 		ev.preventDefault()
 		var e = canvas.relMouseCoords(ev);
-
 		mouseL = false;
 		mouseR = false;
-
 		mousePos = null;
 	}
-
 
 	var iMove = function(ev) {
 		ev.preventDefault()
@@ -246,5 +219,7 @@ function Game(canvas_) {
 		event.preventDefault()
 		iEnd(event)
 	})
+
+	initLab();
 
 }
